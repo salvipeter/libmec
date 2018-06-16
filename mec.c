@@ -30,6 +30,7 @@ mec_t *mec_init(int n, const double *points) {
   return mec;
 }
 
+static
 double distance(const gsl_vector *a, const gsl_vector *b) {
   gsl_vector *tmp = gsl_vector_alloc(2);
   gsl_vector_memcpy(tmp, a);
@@ -39,6 +40,7 @@ double distance(const gsl_vector *a, const gsl_vector *b) {
   return result;
 }
 
+static
 double f(const gsl_vector *x, void *params) {
   mec_t *mec = (mec_t *)params;
   int n = mec->n;
@@ -51,6 +53,7 @@ double f(const gsl_vector *x, void *params) {
   return log(result);
 }
 
+static
 void df(const gsl_vector *x, void *params, gsl_vector *g) {
   mec_t *mec = (mec_t *)params;
   int n = mec->n;
@@ -67,6 +70,7 @@ void df(const gsl_vector *x, void *params, gsl_vector *g) {
   gsl_vector_scale(g, 1.0 / sum);
 }
 
+static
 void fdf(const gsl_vector *x, void *params, double *f, gsl_vector *g) {
   mec_t *mec = (mec_t *)params;
   int n = mec->n;
