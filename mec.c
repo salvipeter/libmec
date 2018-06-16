@@ -4,7 +4,7 @@
 #include <gsl/gsl_blas.h>
 #include <gsl/gsl_multimin.h>
 
-#define EPSILON 1e-5
+#define EPSILON 1e-8
 
 typedef struct {
   int n;
@@ -158,7 +158,10 @@ void mec_eval(mec_t *mec, const double *point, double *coordinates) {
   setup.fdf = fdf;
   setup.n = 2;
   setup.params = (void *)mec;
-  gsl_multimin_fdfminimizer_set(minimizer, &setup, mec->x, 0.1 /* kutykurutty */, EPSILON);
+  df(mec->x, mec, mec->p);                                     /* p is not used any more */
+  double step_size = gsl_blas_dnrm2(mec->p);                   /* as good a guess as any */
+  double line_tol = 0.1;                                       /* line search tolerance */
+  gsl_multimin_fdfminimizer_set(minimizer, &setup, mec->x, step_size, line_tol);
 
   /* Iterate */
   int status;
