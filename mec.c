@@ -1,5 +1,4 @@
 #include <math.h>
-#include <string.h>
 
 #include <gsl/gsl_blas.h>
 #include <gsl/gsl_multimin.h>
@@ -18,7 +17,8 @@ mec_t *mec_init(int n, const double *points) {
   mec->points = (gsl_vector **)malloc(n * sizeof(gsl_vector *));
   for (int i = 0; i < n; ++i) {
     mec->points[i] = gsl_vector_alloc(2);
-    memcpy(gsl_vector_ptr(mec->points[i], 0), points + 2 * i, 2 * sizeof(double));
+    gsl_vector_set(mec->points[i], 0, points[2*i]);
+    gsl_vector_set(mec->points[i], 1, points[2*i+1]);
   }
   mec->p = gsl_vector_alloc(2);
   mec->deviations = (gsl_vector **)malloc(n * sizeof(gsl_vector *));
@@ -91,7 +91,8 @@ void fdf(const gsl_vector *x, void *params, double *f, gsl_vector *g) {
 void mec_eval(mec_t *mec, const double *point, double *coordinates) {
   int n = mec->n;
   gsl_vector **points = mec->points;
-  memcpy(gsl_vector_ptr(mec->p, 0), point, 2 * sizeof(double));
+  gsl_vector_set(mec->p, 0, point[0]);
+  gsl_vector_set(mec->p, 1, point[1]);
 
   /* Compute prior */
   int small = 0;
