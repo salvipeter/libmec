@@ -1,7 +1,9 @@
 #include <math.h>
+#include <stdlib.h>
 
 #include <gsl/gsl_blas.h>
 #include <gsl/gsl_multimin.h>
+/* #include "mini-gsl/mini-gsl.h" */
 
 #define EPSILON 1e-8
 
