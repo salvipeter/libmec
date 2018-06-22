@@ -1,6 +1,6 @@
-all: libmini-gsl.so
+all: mini-gsl.o
 
-CFLAGS=-Wall -pedantic -std=c11 -O3
+CFLAGS=-g -Wall -pedantic -std=c11 -O3
 
-libmini-gsl.so: mini-gsl.c
-	gcc -fpic -shared $(CFLAGS) -o $@ $<
+mini-gsl.o: mini-gsl.c
+	gcc -c $(CFLAGS) -o $@ $<
